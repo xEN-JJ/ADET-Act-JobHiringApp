@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Image,
   View,
@@ -5,7 +6,8 @@ import {
   GestureResponderEvent,
   StyleSheet,
 } from "react-native";
-import JobCard from "@/components/JobCard";
+import JobListing from "@/components/JobListing";
+import JobListings from "@/components/JobListings";
 
 export default function HomeScreen() {
   const handlePress = (event: GestureResponderEvent) => {
@@ -15,10 +17,11 @@ export default function HomeScreen() {
   return (
     <>
       <View style={styles.container}>
-        <Text className="text-red-400 text-lg">Home Screen</Text>
-        <JobCard onPress={handlePress} />
+        <Text>Welcome to ADET Act Job Hiring App!</Text>
+        <Text>Click on the links below to navigate</Text>
       </View>
     </>
+    //Show here the open job cards and add an apply button component that will be used (This should be modal)
   );
 }
 

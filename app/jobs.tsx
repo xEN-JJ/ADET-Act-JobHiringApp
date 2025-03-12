@@ -1,16 +1,49 @@
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import SearchJob from '@/components/SearchJob';
+import JobListings from '@/components/JobListings';
+import AddJob from '@/components/AddJob';
 
-export default function Jobs() {
+interface Job {
+  jobTitle: string;
+  jobDescription: string;
+  jobLocation: string;
+  jobSalary: string;
+  jobCompany: string;
+}
+
+export default function JobsScreen() {
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [filteredJobs, setFilteredJobs] = useState<Job[]>(jobs);
+
+  const handleAddJob = (job: Job) => {
+    const updatedJobs = [...jobs, job];
+    setJobs(updatedJobs);
+    setFilteredJobs(updatedJobs);
+  };
+
+  const handleSearch = (query: string) => {
+    const filtered = jobs.filter(job =>
+      job.jobTitle.toLowerCase().includes(query.toLowerCase()) ||
+      job.jobDescription.toLowerCase().includes(query.toLowerCase()) ||
+      job.jobLocation.toLowerCase().includes(query.toLowerCase()) ||
+      job.jobCompany.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredJobs(filtered);
+  };
+
   return (
-    <View className="align-middle p-10">
-      <Text style={styles.text}>Job Details</Text>
+    <View style={styles.container}>
+      <SearchJob onSearch={handleSearch} />
+      <JobListings jobs={filteredJobs} />
+      <AddJob onAddJob={handleAddJob} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  text: {
+  container: {
     flex: 1,
-    backgroundColor: "#f2f2f2",
+    padding: 10,
   },
 });

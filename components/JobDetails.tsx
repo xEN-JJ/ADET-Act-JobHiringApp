@@ -7,5 +7,6 @@ export default function JobDetails() {
         Job Details
       </Text>
     </View>
+    //Change to add job component
   );
 };

@@ -1,20 +1,9 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
-import { View, Text, StyleSheet } from "react-native";
-import { Stack } from "expo-router";
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import BottomNavBar from "@/components/Navbar";
 
-import "../global.css";
+const Stack = createStackNavigator();
 
 export default function RootLayout() {
-  return (
-    <>
-      <Stack>
-        <Stack.Screen name="home" options={{ headerShown: false }} />
-        <Stack.Screen name="not-found" />
-      </Stack>
-    </>
-  );
+  return <BottomNavBar />;
 }
