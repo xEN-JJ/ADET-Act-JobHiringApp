@@ -2,18 +2,12 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  StyleSheet,
-  TouchableOpacity,
   TextInput,
-  Button,
+  TouchableOpacity,
+  StyleSheet,
+  Modal,
   Alert,
 } from "react-native";
-import Modal from "react-native-modal";
-import { Ionicons } from "@expo/vector-icons";
-
-interface AddJobProps {
-  onAddJob: (job: Job) => void;
-}
 
 interface Job {
   jobTitle: string;
@@ -23,19 +17,24 @@ interface Job {
   jobCompany: string;
 }
 
-export default function AddJob({ onAddJob }: AddJobProps) {
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [jobTitle, setJobTitle] = useState("");
-  const [jobDescription, setJobDescription] = useState("");
-  const [jobLocation, setJobLocation] = useState("");
-  const [jobSalary, setJobSalary] = useState("");
-  const [jobCompany, setJobCompany] = useState("");
+interface UpdateJobProps {
+  job: Job;
+  onUpdate: (updatedJob: Job) => void;
+  onClose: () => void;
+}
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
+export default function UpdateJobModal({
+  job,
+  onUpdate,
+  onClose,
+}: UpdateJobProps) {
+  const [jobTitle, setJobTitle] = useState(job.jobTitle);
+  const [jobDescription, setJobDescription] = useState(job.jobDescription);
+  const [jobLocation, setJobLocation] = useState(job.jobLocation);
+  const [jobSalary, setJobSalary] = useState(job.jobSalary);
+  const [jobCompany, setJobCompany] = useState(job.jobCompany);
 
-  const handleAddJob = () => {
+  const handleUpdateJob = () => {
     if (
       !jobTitle ||
       !jobDescription ||
@@ -47,15 +46,16 @@ export default function AddJob({ onAddJob }: AddJobProps) {
       return;
     }
 
-    const newJob = {
+    const updatedJob: Job = {
       jobTitle,
       jobDescription,
       jobLocation,
       jobSalary,
       jobCompany,
     };
-    onAddJob(newJob);
-    toggleModal();
+
+    onUpdate(updatedJob);
+    onClose();
   };
 
   const handleSalaryChange = (text: string) => {
@@ -65,14 +65,10 @@ export default function AddJob({ onAddJob }: AddJobProps) {
   };
 
   return (
-    <>
-      <TouchableOpacity style={styles.addButton} onPress={toggleModal}>
-        <Ionicons name="add" size={24} color="white" />
-      </TouchableOpacity>
-
-      <Modal isVisible={isModalVisible}>
+    <Modal visible animationType="slide" transparent>
+      <View style={styles.overlay}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Add New Job</Text>
+          <Text style={styles.modalTitle}>Update Job</Text>
           <TextInput
             style={styles.input}
             placeholder="Job Title"
@@ -85,6 +81,7 @@ export default function AddJob({ onAddJob }: AddJobProps) {
             placeholder="Job Description"
             value={jobDescription}
             onChangeText={setJobDescription}
+            multiline
           />
           <TextInput
             style={styles.input}
@@ -109,83 +106,78 @@ export default function AddJob({ onAddJob }: AddJobProps) {
           />
           <View style={styles.buttonContainer}>
             <TouchableOpacity
-              style={styles.addButtonModal}
-              onPress={handleAddJob}
+              style={styles.updateButton}
+              onPress={handleUpdateJob}
             >
-              <Text style={styles.buttonText}>Add Job</Text>
+              <Text style={styles.buttonText}>Update Job</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.cancelButton} onPress={toggleModal}>
+            <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
               <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>
           </View>
         </View>
-      </Modal>
-    </>
+      </View>
+    </Modal>
   );
 }
 
 const styles = StyleSheet.create({
-  addButton: {
-    backgroundColor: "tomato",
-    borderRadius: 50,
-    padding: 20,
-    position: "absolute",
-    bottom: 30,
-    right: 30,
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     justifyContent: "center",
     alignItems: "center",
-    elevation: 5,
   },
   modalContent: {
+    width: "90%",
     backgroundColor: "white",
     padding: 20,
     borderRadius: 10,
+    alignItems: "center",
+    elevation: 5,
   },
   modalTitle: {
-    justifyContent: "center",
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
-    textAlign: "center",
   },
   input: {
+    width: "100%",
     borderWidth: 1,
-    borderColor: "gray",
-    padding: 10,
+    borderColor: "#ccc",
+    padding: 12,
     marginBottom: 10,
     borderRadius: 5,
+    backgroundColor: "#f9f9f9",
   },
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    width: "100%",
   },
-  addButtonModal: {
-    backgroundColor: "tomato",
-    padding: 10,
-    borderRadius: 5,
+  updateButton: {
     flex: 1,
-    marginRight: 10,
+    backgroundColor: "#ff6347",
+    padding: 12,
+    borderRadius: 5,
     alignItems: "center",
+    marginRight: 10,
   },
   cancelButton: {
-    backgroundColor: "white",
-    borderColor: "tomato",
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 5,
     flex: 1,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ff6347",
+    padding: 12,
+    borderRadius: 5,
     alignItems: "center",
   },
   buttonText: {
     color: "white",
+    fontWeight: "bold",
   },
   cancelButtonText: {
-    color: "tomato",
-  },
-  addButtonModalHover: {
-    backgroundColor: "darkred",
-  },
-  cancelButtonHover: {
-    backgroundColor: "#f5f5f5",
+    color: "#ff6347",
+    fontWeight: "bold",
   },
 });

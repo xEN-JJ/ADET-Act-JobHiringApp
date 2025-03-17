@@ -6,7 +6,7 @@ import {
   GestureResponderEvent,
   StyleSheet,
 } from "react-native";
-import JobListing from "@/components/JobListing";
+import JobListing from "@/components/JobCard";
 import JobListings from "@/components/JobListings";
 
 export default function HomeScreen() {
@@ -17,7 +17,7 @@ export default function HomeScreen() {
   return (
     <>
       <View style={styles.container}>
-        <Text>Welcome to ADET Act Job Hiring App!</Text>
+        <Text>Job Hiring App!</Text>
         <Text>Click on the links below to navigate</Text>
       </View>
     </>

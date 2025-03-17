@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'gray',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 6,
     marginBottom: 5,
   },
   subDescription: {

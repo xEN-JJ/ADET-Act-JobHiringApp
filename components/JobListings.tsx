@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
-import JobListing from './JobListing';
+import React from "react";
+import { View, FlatList, StyleSheet } from "react-native";
+import JobCard from "./JobCard";
 
 interface Job {
   jobTitle: string;
@@ -12,9 +12,15 @@ interface Job {
 
 interface JobListingsProps {
   jobs: Job[];
+  onUpdate: (job: Job) => void;
+  onDelete: (job: Job) => void;
 }
 
-export default function JobListings({ jobs }: JobListingsProps) {
+export default function JobListings({
+  jobs,
+  onUpdate,
+  onDelete,
+}: JobListingsProps) {
   return (
     <View style={styles.container}>
       <FlatList
@@ -22,7 +28,7 @@ export default function JobListings({ jobs }: JobListingsProps) {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.cardContainer}>
-            <JobListing job={item} onPress={() => {}} />
+            <JobCard job={item} onUpdate={onUpdate} onDelete={onDelete} />
           </View>
         )}
         contentContainerStyle={styles.listContent}
@@ -34,15 +40,15 @@ export default function JobListings({ jobs }: JobListingsProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
   },
   listContent: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   cardContainer: {
-    marginBottom: 20,
-    width: '100%',
+    width: "100%",
+    marginBottom: 10,
   },
 });
